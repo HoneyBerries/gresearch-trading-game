@@ -19,7 +19,7 @@ class Solution:
     def __init__(self):
         self.history = []
 
-    def play(self, reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool = False) -> bool:
+    def play(self, reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool) -> bool:
         self.history.append(reward)
         if is_locked:
             return False
