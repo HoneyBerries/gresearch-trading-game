@@ -12,21 +12,23 @@ uv sync
 
 ### 1. Edit `solution.py`
 
-Write your strategy in the `play` method:
+Write your strategy in the `play` function or class method:
 
 ```python
 class Solution:
     def __init__(self):
         self.history = []
 
-    def play(self, reward, lockout, t, T, your_score, other_scores):
+    def play(self, reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool = False) -> bool:
         self.history.append(reward)
-        return reward > 1.5
+        if is_locked:
+            return False
+        return reward > 14.0
 
 play = Solution().play
 ```
 
-Your function is called every round (including while locked out). Returning True while locked out has no effect but you still see the reward.
+Your function is called every round (including while locked out). Returning `True` while locked out has no effect but you still observe the reward and the state of the game.
 
 ### 2. Test locally
 
@@ -38,7 +40,7 @@ Checks your function handles edge cases and runs fast enough.
 
 ### 3. Submit
 
-Edit `submit.py` with your team name, password, and server address, then:
+Edit `config.py` with your team name, password, and server address, then:
 
 ```bash
 uv run python submit.py
@@ -52,11 +54,12 @@ Your password is set on your first submission. All future submissions for that t
 
 ## Parameters
 
-| Parameter | Description |
-|-----------|-------------|
-| `reward` | The reward offered this round (float) |
-| `lockout` | Rounds locked out if you accept (int) |
-| `t` | Current round number, 1 to T (int) |
-| `T` | Total rounds (int) |
-| `your_score` | Your cumulative score (float) |
-| `other_scores` | Other teams' scores (list of floats) |
+| Parameter | Type | Description |
+|---|---|---|
+| `reward` | `float` | The reward offered this round |
+| `lockout` | `int` | Rounds locked out if you accept |
+| `t` | `int` | Current round number, 1 to T |
+| `T` | `int` | Total rounds |
+| `your_score` | `float` | Your cumulative score so far at round $t-1$ |
+| `other_scores` | `list[tuple[float, bool]]` | List of `(score, is_locked)` tuples for other teams at round $t-1$ (empty `[]` on round 1) |
+| `is_locked` | `bool` | Whether you are currently locked out this round |

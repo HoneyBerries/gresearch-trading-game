@@ -24,7 +24,13 @@ class Blackbox:
         input_variable_name = '__magic_input__'
         with redirect_stderr(self.stderr), redirect_stdout(self.stdout):
             self.shell.user_ns[input_variable_name] = args, kwargs
-            out = self.shell.run_cell(f'{self.name}(*{input_variable_name}[0], **{input_variable_name}[1])')
+            out = self.shell.run_cell(f'''
+try:
+    __magic_res__ = {self.name}(*{input_variable_name}[0], **{input_variable_name}[1])
+except TypeError:
+    __magic_res__ = {self.name}(*{input_variable_name}[0][:6])
+__magic_res__
+''')
             if out.error_before_exec is not None:
                 raise out.error_before_exec
             if out.error_in_exec is not None:
@@ -40,11 +46,14 @@ class Plackbox:
 
     def __call__(self, *args, **kwargs):
         with redirect_stderr(self.stderr), redirect_stdout(self.stdout):
-            return self.foo(*args, **kwargs)
+            try:
+                return self.foo(*args, **kwargs)
+            except TypeError:
+                return self.foo(*args[:6])
 
 
 def generate_function(data):
     if data[0] == 'p':
-        return pickle.loads(base64.b64decode(data[1:]))
+        return Plackbox(base64.b64decode(data[1:]))
     else:
         return Blackbox(base64.b64decode(data[1:]).decode('utf-8'))

@@ -32,9 +32,10 @@ class Client:
             print('No server configured. Pass server= to Client().')
             return
         test_cases = [
-            ((1.5, 5, 1, 10, 1.3, [1.1, 2.3]), "generic inputs", None),
-            ((1.5, 5, 1, 10, 1.3, []), "playing by yourself", None),
-            ((1.5, 5, 1, 10, -1, [-1.1, 2.3]), "negative score", None),
+            ((1.5, 5, 1, 10, 0.0, [], False), "round 1 (empty other_scores)", None),
+            ((1.5, 5, 2, 10, 1.3, [(1.1, False), (2.3, True)], False), "round > 1 with other_scores and locked status", None),
+            ((1.5, 5, 3, 10, 1.3, [], False), "playing by yourself", None),
+            ((1.5, 5, 4, 10, -1.0, [(-1.1, False), (2.3, False)], True), "negative score & locked out", None),
         ]
         if isinstance(source_or_function, str):
             output = source_or_function
@@ -50,7 +51,10 @@ class Client:
                     print(test_str)
                     test_str = ''
                 try:
-                    a = foo(*args)
+                    try:
+                        a = foo(*args)
+                    except TypeError:
+                        a = foo(*args[:6])
                     if j == 0:
                         outputs[i] = a
                     else:
@@ -71,14 +75,21 @@ class Client:
         tic = timeit.default_timer()
         for j in range(1_000):
             T = int(1_000_000 * random.random())
-            t = int(random.random() * T)
+            t = int(random.random() * T) + 1
             lockout = int(10 * random.random())
             reward = 100 * random.random()
             score = reward * T * random.random()
-            scores = [reward * T * random.random() for _ in range(10)]
-            args = (reward, lockout, t, T, score, scores)
+            if t == 1:
+                scores = []
+            else:
+                scores = [(reward * T * random.random(), random.random() > 0.5) for _ in range(random.randint(0, 5))]
+            is_locked = random.random() > 0.5
+            args = (reward, lockout, t, T, score, scores, is_locked)
             try:
-                a = foo(*args)
+                try:
+                    a = foo(*args)
+                except TypeError:
+                    a = foo(*args[:6])
             except Exception:
                 print(f'Random input {args}')
                 raise
