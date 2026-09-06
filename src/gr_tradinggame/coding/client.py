@@ -51,10 +51,7 @@ class Client:
                     print(test_str)
                     test_str = ''
                 try:
-                    try:
-                        a = foo(*args)
-                    except TypeError:
-                        a = foo(*args[:6])
+                    a = foo(*args)
                     if j == 0:
                         outputs[i] = a
                     else:
@@ -86,10 +83,7 @@ class Client:
             is_locked = random.random() > 0.5
             args = (reward, lockout, t, T, score, scores, is_locked)
             try:
-                try:
-                    a = foo(*args)
-                except TypeError:
-                    a = foo(*args[:6])
+                a = foo(*args)
             except Exception:
                 print(f'Random input {args}')
                 raise
