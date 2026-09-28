@@ -1,7 +1,7 @@
 # You can create any variables here to store state within a run (but not between runs)
 history = []
 
-def play(reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool = False) -> bool:
+def play(reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool) -> bool:
 	"""
 	Return True to accept the reward, False to skip.
 
