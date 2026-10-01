@@ -22,7 +22,8 @@ def play(reward: float, lockout: int, t: int, T: int, your_score: float, other_s
 ### 2. Testing & Submissions
 - Run local unit tests: `uv run python test.py`.
 - Submit to server: `uv run python submit.py`.
-- Configuration (team name, password, server endpoint) is stored in `config.py`.
+- Configuration (team name, password, server endpoint) is stored in `config.py`. Keep the checked-in team name and password empty; users fill them in for their submissions.
+- Current EC2 submission endpoint: `ec2-54-217-141-255.eu-west-1.compute.amazonaws.com:5000`.
 
 ### 3. Guidelines
 - Do NOT use emojis in code, commits, or documentation.
