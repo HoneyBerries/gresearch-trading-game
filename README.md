@@ -30,8 +30,6 @@ class Solution:
 play = Solution().play
 ```
 
-The function must accept exactly seven parameters, including `is_locked`, with no default value for that parameter. The checked-in `config.py` leaves the team name and password empty; fill them in before submitting. Its server endpoint points to the current EC2 submission service on port 5000.
-
 Your function is called every round (including while locked out). Returning `True` while locked out has no effect but you still observe the reward and the state of the game.
 
 ### 2. Test locally
