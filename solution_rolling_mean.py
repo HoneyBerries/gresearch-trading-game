@@ -1,11 +1,6 @@
 import bisect
 import itertools
 
-# State within a run (not preserved between runs)
-history = []
-# Accept when the mean reward seen so far exceeds this value
-threshold = 0.0
-
 
 def play(reward: float, lockout: int, t: int, T: int, your_score: float, other_scores: list[tuple[float, bool]], is_locked: bool) -> bool:
 	"""
@@ -35,9 +30,9 @@ def play(reward: float, lockout: int, t: int, T: int, your_score: float, other_s
 
 	# Observe the mean to figure out the expected reward, and accept if it's above the threshold
 
-	if len(history) == 0:
-	    return False  # Avoid division by zero if history is empty
+    if len(history) == 0:
+        return False  # Avoid division by zero if history is empty
+    
+    mean_reward = sum(history) / len(history)
 
-	mean_reward = sum(history) / len(history)
-
-	return mean_reward > threshold  # Accept if the mean reward exceeds the threshold
+    return mean_reward > threshold  # Accept if the mean reward exceeds the threshold
